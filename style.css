@@ -13,7 +13,7 @@ right,#007bff,#00c6ff);
     border -radius :15px;
 }
 .card img{
-height:250px;
+height:180px;
 object-fit:cover;
 }
 footer{
