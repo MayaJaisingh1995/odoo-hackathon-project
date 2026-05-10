@@ -1,0 +1,16 @@
+body{
+    background-color:#f5f5f5;
+}
+.hero{
+    backgound:  linear - gradient(to
+right,#007bff,#00c6ff);      
+   color :white;
+   padding :100px 20px;
+}
+.card{
+    border :none;
+    border -radius :15px;
+}
+  
+  
+  
