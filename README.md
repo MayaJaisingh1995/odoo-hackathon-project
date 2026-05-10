@@ -42,6 +42,5 @@ The goal of Traveloop is to simplify personalized travel planning through an eas
 
 ## Team
 DURGADEVI.M hackathon team
-
-- Maya Jaisingh
-- Hackathon Team
+- Gopika.M
+- Bhagya lakshmi.M
