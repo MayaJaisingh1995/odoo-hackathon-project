@@ -1,197 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Traveloop — Personalized Travel Planning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F7F3EE;
+      --sand: #E8DFD0;
+      --terracotta: #C4694F;
+      --terra-dark: #9E4A34;
+      --forest: #2C4A3E;
+      --forest-light: #3D6B5C;
+      --ink: #1A1A18;
+      --muted: #6B6560;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(247, 243, 238, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196, 105, 79, 0.15);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--forest);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--terracotta); }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: 0.9rem; font-weight: 400;
+      color: var(--muted); transition: color 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--terracotta) !important;
+      color: var(--white) !important;
+      padding: 0.55rem 1.3rem;
+      border-radius: 100px;
+      font-weight: 500 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--terra-dark) !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 4rem 3rem 4rem 5rem;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--terracotta);
+      background: rgba(196, 105, 79, 0.1);
+      padding: 0.4rem 1rem; border-radius: 100px;
+      width: fit-content; margin-bottom: 2rem;
+    }
+    .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em {
+      font-style: italic; font-weight: 400;
+      color: var(--terracotta);
+    }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--muted);
+      line-height: 1.7; max-width: 420px;
+      margin-bottom: 2.5rem; font-weight: 300;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--terracotta); color: var(--white);
+      text-decoration: none; padding: 0.85rem 2rem;
+      border-radius: 100px; font-size: 0.95rem; font-weight: 500;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 4px 24px rgba(196,105,79,0.3);
+    }
+    .btn-primary:hover { background: var(--terra-dark); transform: translateY(-1px); }
+    .btn-primary svg { width: 16px; height: 16px; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--forest); text-decoration: none;
+      font-size: 0.95rem; font-weight: 500;
+      padding: 0.85rem 0; border-bottom: 1.5px solid var(--forest);
+      transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--forest-light); }
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3.5rem;
+      padding-top: 2rem; border-top: 1px solid var(--sand);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 700; color: var(--ink);
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── HERO RIGHT ── */
+    .hero-right {
+      position: relative;
+      background: var(--forest);
+      overflow: hidden;
+    }
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.55;
+      display: block;
+    }
+    .hero-card {
+      position: absolute; bottom: 3rem; left: 2rem; right: 2rem;
+      background: rgba(247, 243, 238, 0.95);
+      backdrop-filter: blur(16px);
+      border-radius: 20px; padding: 1.5rem;
+    }
+    .hero-card-label {
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem;
+    }
+    .hero-card-dest { display: flex; align-items: center; justify-content: space-between; }
+    .hero-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700; color: var(--ink);
+    }
+    .hero-card-tag {
+      background: rgba(44, 74, 62, 0.12); color: var(--forest);
+      font-size: 0.78rem; font-weight: 500; padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+    }
+    .hero-card-details { display: flex; gap: 1.5rem; margin-top: 1rem; }
+    .hero-card-detail { font-size: 0.85rem; color: var(--muted); }
+    .hero-card-detail strong { color: var(--ink); font-weight: 500; display: block; margin-bottom: 2px; }
+    .hero-dots {
+      position: absolute; top: 3rem; right: 2rem;
+      display: flex; gap: 6px;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+    }
+    .dot.active { background: var(--white); width: 24px; border-radius: 100px; }
+
+    /* ── DESTINATIONS ── */
+    .section { padding: 6rem 5rem; }
+    .section-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+    .section-tag {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.7rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 700;
+      line-height: 1.15; color: var(--ink);
+    }
+    .section-title em { font-style: italic; font-weight: 400; }
+    .see-all {
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none; color: var(--forest); font-weight: 500;
+      font-size: 0.9rem; border-bottom: 1px solid var(--forest);
+      padding-bottom: 2px; white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .see-all:hover { color: var(--forest-light); }
+
+    .destinations-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .dest-card {
+      position: relative; border-radius: 20px; overflow: hidden;
+      cursor: pointer; text-decoration: none; display: block;
+    }
+    .dest-card:first-child { grid-row: span 1; }
+    .dest-card img {
+      width: 100%; height: 380px; object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+      filter: brightness(0.75);
+    }
+    .dest-card:hover img { transform: scale(1.04); }
+    .dest-card-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    }
+    .dest-card-region {
+      font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(255,255,255,0.7); margin-bottom: 4px; font-weight: 500;
+    }
+    .dest-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--white);
+    }
+    .dest-card-desc { font-size: 0.83rem; color: rgba(255,255,255,0.8); margin-top: 4px; }
+    .dest-badge {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: rgba(247, 243, 238, 0.92);
+      backdrop-filter: blur(8px);
+      font-size: 0.78rem; font-weight: 500; color: var(--ink);
+      padding: 0.3rem 0.75rem; border-radius: 100px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      background: var(--forest);
+      padding: 6rem 5rem;
+      color: var(--white);
+    }
+    .how-section .section-tag { color: rgba(196,105,79,0.9); }
+    .how-section .section-title { color: var(--white); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem;
+      margin-top: 3.5rem;
+    }
+    .step { position: relative; }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem; font-weight: 700;
+      color: rgba(255,255,255,0.1); line-height: 1;
+      margin-bottom: -1rem; position: relative; z-index: 0;
+    }
+    .step-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: rgba(196, 105, 79, 0.2);
+      border: 1px solid rgba(196, 105, 79, 0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.2rem; position: relative; z-index: 1;
+    }
+    .step-icon svg { width: 22px; height: 22px; stroke: var(--terracotta); fill: none; }
+    .step-title { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.6rem; color: var(--white); }
+    .step-desc { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.7; font-weight: 300; }
+    .step-connector {
+      position: absolute; top: 4.5rem; right: -1.5rem;
+      width: 3rem; height: 1px;
+      background: rgba(255,255,255,0.15);
+    }
+    .step:last-child .step-connector { display: none; }
+
+    /* ── BUDGET PREVIEW ── */
+    .budget-section { padding: 6rem 5rem; background: var(--sand); }
+    .budget-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .budget-left .section-title { margin-bottom: 1.2rem; }
+    .budget-left p { font-size: 1rem; color: var(--muted); line-height: 1.7; font-weight: 300; margin-bottom: 2rem; }
+    .budget-card {
+      background: var(--white); border-radius: 24px; padding: 2rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    }
+    .budget-card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .budget-trip-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700;
+    }
+    .budget-total-label { font-size: 0.75rem; color: var(--muted); text-align: right; }
+    .budget-total-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 700; color: var(--forest);
+    }
+    .budget-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 0; border-bottom: 1px solid var(--cream);
+    }
+    .budget-item:last-of-type { border-bottom: none; }
+    .budget-item-left { display: flex; align-items: center; gap: 12px; }
+    .budget-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .budget-item-name { font-size: 0.9rem; font-weight: 400; }
+    .budget-item-amount { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+    .budget-bar-wrap { height: 4px; background: var(--cream); border-radius: 100px; margin-top: 0.4rem; overflow: hidden; width: 100px; }
+    .budget-bar { height: 100%; border-radius: 100px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.6);
+      padding: 2.5rem 5rem; font-size: 0.85rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--white); font-weight: 700;
+    }
+    .footer-logo span { color: var(--terracotta); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-left > * { animation: fadeUp 0.7s ease both; }
+    .hero-tag   { animation-delay: 0.1s; }
+    .hero-title { animation-delay: 0.25s; }
+    .hero-sub   { animation-delay: 0.35s; }
+    .hero-actions { animation-delay: 0.45s; }
+    .hero-stats { animation-delay: 0.55s; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 340px; }
+      .hero-left { padding: 3rem 1.5rem; }
+      .destinations-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .budget-inner { grid-template-columns: 1fr; }
+      .section { padding: 4rem 1.5rem; }
+      .how-section { padding: 4rem 1.5rem; }
+      .budget-section { padding: 4rem 1.5rem; }
+      nav { padding: 1rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+      .step-connector { display: none; }
+    }
+  </style>
+</head>
 <body>
 
-    <!-- Navbar Start -->
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Travel<span>oop</span></a>
+  <ul class="nav-links">
+    <li><a href="trips.html">Trips</a></li>
+    <li><a href="budget.html">Budget</a></li>
+    <li><a href="login.html" class="nav-cta">Sign in</a></li>
+  </ul>
+</nav>
 
-        <div class="container">
-
-            <a class="navbar-brand fw-bold" href="#">
-                Traveloop
-            </a>
-
-            <div>
-
-                <a href="index.html"
-                class="btn btn-outline-light me-2">
-                    Home
-                </a>
-
-                <a href="trips.html"
-                class="btn btn-outline-light me-2">
-                    Trips
-                </a>
-
-                <a href="budget.html"
-                class="btn btn-outline-light me-2">
-                    Budget
-                </a>
-
-                <a href="login.html"
-                class="btn btn-primary">
-                    Login
-                </a>
-
-            </div>
-
-        </div>
-
-    </nav>
-
-    <!-- Navbar End -->
-
-
-    <!-- Hero Section Start -->
-
-    <section class="hero">
-
-        <div class="container text-center">
-
-            <h1 class="display-3 fw-bold">
-                Explore The World
-            </h1>
-
-            <p class="lead mt-3">
-                Personalized Travel Planning Made Easy
-            </p>
-
-            <button class="btn btn-light btn-lg mt-3">
-                Plan Your Trip
-            </button>
-
-        </div>
-
-    </section>
-
-    <!-- Hero Section End -->
-
-
-    <!-- Travel Cards Start -->
-
-    <div class="container mt-5">
-
-        <h2 class="text-center mb-5">
-            Popular Destinations
-        </h2>
-
-        <div class="row">
-
-            <!-- Card 1 -->
-
-            <div class="col-md-4">
-
-                <div class="card shadow">
-
-                <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2"
-class="card-img-top">
-                    <div class="card-body">
-
-                        <h5 class="card-title">
-                            Goa
-                        </h5>
-
-                        <p class="card-text">
-                            Enjoy beaches and nightlife.
-                        </p>
-
-                        <button class="btn btn-primary">
-                            View Trip
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- Card 2 -->
-
-            <div class="col-md-4">
-
-                <div class="card shadow">
-
-                <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944"
-class="card-img-top">
-
-                    <div class="card-body">
-
-                        <h5 class="card-title">
-                            Kerala
-                        </h5>
-
-                        <p class="card-text">
-                            Explore nature and backwaters.
-                        </p>
-
-                        <button class="btn btn-success">
-                            View Trip
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- Card 3 -->
-
-            <div class="col-md-4">
-
-                <div class="card shadow">
-
-                   <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb"
-class="card-img-top"> 
-
-                    <div class="card-body">
-
-                        <h5 class="card-title">
-                            Ooty
-                        </h5>
-
-                        <p class="card-text">
-                            Hills, climate, and relaxation.
-                        </p>
-
-                        <button class="btn btn-danger">
-                            View Trip
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-tag">India's Travel Planner</span>
+    <h1 class="hero-title">Plan your next trip <em>effortlessly</em></h1>
+    <p class="hero-sub">Personalized itineraries, smart budgeting, and handpicked destinations — all in one place. Travel more, stress less.</p>
+    <div class="hero-actions">
+      <a href="trips.html" class="btn-primary">
+        Plan Your Trip
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+      <a href="#destinations" class="btn-ghost">Explore destinations</a>
     </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Destinations</div>
+      </div>
+      <div>
+        <div class="stat-num">₹0</div>
+        <div class="stat-label">Free to plan</div>
+      </div>
+      <div>
+        <div class="stat-num">3 min</div>
+        <div class="stat-label">To build itinerary</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img
+      src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=900&q=80"
+      alt="Kerala backwaters"
+      class="hero-img"
+    />
+    <div class="hero-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">✦ Featured Destination</div>
+      <div class="hero-card-dest">
+        <div class="hero-card-name">Kerala</div>
+        <span class="hero-card-tag">Nature</span>
+      </div>
+      <div class="hero-card-details">
+        <div class="hero-card-detail">
+          <strong>Best time</strong>Oct – Mar
+        </div>
+        <div class="hero-card-detail">
+          <strong>Est. budget</strong>₹8,000 – 15,000
+        </div>
+        <div class="hero-card-detail">
+          <strong>Duration</strong>4 – 6 days
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Travel Cards End -->
+<!-- DESTINATIONS -->
+<section class="section" id="destinations">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">Popular Picks</div>
+      <h2 class="section-title">Where do you<br>want to <em>explore?</em></h2>
+    </div>
+    <a href="trips.html" class="see-all">View all destinations →</a>
+  </div>
+  <div class="destinations-grid">
+    <a href="trips.html" class="dest-card">
+      <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=900&q=80" alt="Goa" />
+      <span class="dest-badge">Most Popular</span>
+      <div class="dest-card-info">
+        <div class="dest-card-region">Coastal · Goa</div>
+        <div class="dest-card-name">Goa</div>
+        <div class="dest-card-desc">Beaches, nightlife &amp; Portuguese charm</div>
+      </div>
+    </a>
+    <a href="trips.html" class="dest-card">
+      <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=700&q=80" alt="Kerala" />
+      <div class="dest-card-info">
+        <div class="dest-card-region">Backwaters · Kerala</div>
+        <div class="dest-card-name">Kerala</div>
+        <div class="dest-card-desc">Nature, spice &amp; serene backwaters</div>
+      </div>
+    </a>
+    <a href="trips.html" class="dest-card">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=700&q=80" alt="Ooty" />
+      <div class="dest-card-info">
+        <div class="dest-card-region">Hills · Tamil Nadu</div>
+        <div class="dest-card-name">Ooty</div>
+        <div class="dest-card-desc">Cool hills, tea gardens &amp; tranquility</div>
+      </div>
+    </a>
+  </div>
+</section>
 
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="section-tag">Simple Process</div>
+  <h2 class="section-title">Plan your trip in<br>three <em>easy steps</em></h2>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24" stroke-width="1.8">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <div class="step-title">Choose a destination</div>
+      <div class="step-desc">Browse our curated list of Indian destinations and pick the one that excites you most.</div>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24" stroke-width="1.8">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+      </div>
+      <div class="step-title">Set your budget</div>
+      <div class="step-desc">Tell us how much you want to spend. We'll break it down into hotel, food, and transport.</div>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24" stroke-width="1.8">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="step-title">Get your itinerary</div>
+      <div class="step-desc">Receive a personalized, ready-to-go travel plan tailored to your timeline and budget.</div>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer Start -->
-
-    <footer class="bg-dark text-white text-center p-4 mt-5">
-
-        <h5>
-            Traveloop
-        </h5>
-
-        <p>
-            Personalized Travel Planning App
-        </p>
-
-        <p>
-            © 2026 All Rights Reserved
-        </p>
-
-    </footer>
-
-    <!-- Footer End -->
-
-
-    <script src="script.js"></script>
-
-</body>
+<!-- BUDGET PREVIEW -->
+<section class="budget-section">
+  <div class="budget-inner">
+    <div class="budget-left">
+      <div class="section-tag">Smart Budgeting</div>
+      <h2 class="section-title">Know exactly<br>what you'll <em>spend</em></h2>
+      <p>No more guessing. Traveloop gives you a clear cost breakdown before you book a single thing.</p>
+      <a href="budget.html" class="btn-primary" style="width: fit-content;">See Budget Planner →</a>
+    </div>
+    <div class="budget-card">
+      <div class="budget-card-header">
+        <div class="budget-trip-name">Goa Trip 🌊</div>
+        <div>
+          <div class="budget-total-label">Total estimate</div>
+          <div class="budget-total-val">₹10,000</div>
+        </div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-item-left">
+          <div class="budget-dot" style="background:#2C4A3E"></div>
+          <div>
+            <div class="budget-item-name">Hotel</div>
+            <div class="budget-bar-wrap"><div class="budget-bar" style="width:50%;background:#2C4A3E"></div></div>
