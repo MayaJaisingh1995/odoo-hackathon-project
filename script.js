@@ -1,1 +1,2 @@
-console.log("Traveloop App Started")
+console.log("Traveloop App Started");
+alert("Welcome To Traveloop"); 
