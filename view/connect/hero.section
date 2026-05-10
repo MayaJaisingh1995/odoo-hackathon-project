@@ -1,0 +1,19 @@
+<section class="hero">
+
+  <div class="container text-center">
+
+    <h1 class="display-4">
+      Welcome To Traveloop App
+    </h1>
+
+    <p class="lead">
+      Personalized Travel Planning Made Easy
+    </p>
+
+    <button class="btn btn-light btn-lg">
+      Plan Your Trip
+    </button>
+
+  </div>
+
+</section>
