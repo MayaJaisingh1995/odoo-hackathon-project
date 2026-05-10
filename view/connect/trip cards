@@ -1,0 +1,35 @@
+<div class="container mt-5">
+
+  <div class="row">
+
+    <!-- Card 1 -->
+    <div class="col-md-4">
+
+      <div class="card shadow">
+
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+        class="card-img-top">
+
+        <div class="card-body">
+
+          <h5 class="card-title">
+            Goa Trip
+          </h5>
+
+          <p class="card-text">
+            7 Days Beach Vacation
+          </p>
+
+          <button class="btn btn-primary">
+            View Plan
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
