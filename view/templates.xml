@@ -1,12 +1,12 @@
 <odoo>
-<template id="Traveloop_Home" name="Traveloop Home"
+<template id="Traveloop_Home" 
+  name="Traveloop Home">
   <t t-call="website.layout">
-    <div id="wrap">
-      <!--YOUR HTML GOES HERE--
-      <div class="container py-5">
+    <div class="container mt-5">
       <h1 class="display-4 text- center">Welcome To Traveloop</h1>
       <p class="lead text-center text-muted">Your Wonderful journey starts here.</p>
-    </div>
+      <p class="lead text-center text-muted">Personalized Travel Planning App</p>
+       </div>
     </t>
     </template>
     </odoo>
